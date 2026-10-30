@@ -1,0 +1,4 @@
+model,accuracy,roc_auc,brier,log_loss
+Always predict the win rate,0.737,,0.195,0.578
+xG difference only,0.794,0.808,0.147,0.451
+All stat differences + venue,0.805,0.843,0.135,0.421

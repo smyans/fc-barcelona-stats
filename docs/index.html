@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Wins Barça Games?</title>
+  <meta name="description" content="An interactive analysis of 524 FC Barcelona La Liga matches (2004/05 to 2020/21) using StatsBomb event data: which player stats go with winning, every shot, where Barça have the ball, and a win model.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='20' fill='%232a78d6'/><rect x='50' y='10' width='40' height='80' rx='0' fill='%23e34948'/></svg>">
+  <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">FC Barcelona · La Liga 2004/05 – 2020/21 · StatsBomb event data</p>
+      <h1>What wins Barça games?</h1>
+      <p class="lede">Every pass, shot, tackle and press from 524 league matches across the Messi era, used to answer one question:
+        when Barcelona win, and when they drop points, what's actually different?</p>
+      <div class="tiles" id="summary-tiles"></div>
+      <nav class="toc" aria-label="Sections">
+        <a href="#short">The short version</a>
+        <a href="#players">Player stats</a>
+        <a href="#shots">Shot map</a>
+        <a href="#territory">Territory</a>
+        <a href="#model">Win model</a>
+        <a href="#method">Method</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="short">
+      <h2>The short version</h2>
+      <ol class="short-list" id="short-list">
+        <li><strong>It comes down to chances, not the ball.</strong> In wins, Barça created a median 2.14 xG and allowed 0.66. When they dropped
+          points, it was 1.24 and 1.08. Possession barely changed: about two-thirds of the passes either way (66.5% in wins, 67.6% when dropping points).</li>
+        <li><strong>Dropped points happen around the opponent's box, not Barça's.</strong> When Barça drew or lost, they had <em>more</em> of the ball
+          in the opponent's half, camped on the edge of the area against a deep defence. The model backs this up: holding chances equal,
+          games where Barça had to force far more forward passes than the opponent went worse.</li>
+        <li><strong>The forwards defended.</strong> Barça attackers who pressed, tackled and won the ball back in midfield were more likely to be on the
+          winning side. The high press wasn't just style; it shows up in the results.</li>
+        <li><strong>Midfield: keep it clean and switch it.</strong> Accurate passing and switches of play go with winning. Midfielders forcing it
+          forward on the dribble go with dropped points, usually a sign the passing lanes were closed.</li>
+        <li><strong>Better finishing than the chances deserved, in all 17 seasons.</strong> Barça scored 1,347 goals from 1,053 xG. Messi alone is
+          +148 (472 goals from 324 xG), but the rest of the squad is +145 too, a hint that Barça's chances were even better than an average-team xG model rates them.</li>
+      </ol>
+    </section>
+
+    <section id="players">
+      <h2>Which player stats go with winning?</h2>
+      <p class="section-lede">Every Barça player performance of 30+ minutes, with each stat converted to a per-90 rate and compared with the result.
+        Blue means the stat tends to be higher when Barça win; red means it tends to be higher when they drop points.
+        <strong>The deeper the colour, the stronger the evidence.</strong> Click any cell to see the numbers and what they mean.</p>
+      <div class="split">
+        <div class="card">
+          <div id="heatmap" class="heatmap" role="grid" aria-label="Link between each stat and winning, by position group"></div>
+          <div id="heatmap-legend"></div>
+        </div>
+        <div class="card sticky" id="dist-card">
+          <h3 id="dist-title"></h3>
+          <p class="meta" id="dist-meta"></p>
+          <svg id="dist-chart" role="img"></svg>
+          <div class="insight" id="dist-insight"></div>
+        </div>
+      </div>
+      <details class="table-view">
+        <summary>View as table</summary>
+        <div id="corr-table"></div>
+      </details>
+      <div class="analysis">
+        <h3>Forwards decide games</h3>
+        <p>The darkest blue column is the attackers'. Their xG is the single strongest player-level link with the result, followed by expected assists and
+          shots. In wins, the typical Barça forward produced 0.40 xG per 90; in defeats, 0.22. With a front line this good, the question was rarely whether
+          they would finish, and usually whether they got the chances.</p>
+        <h3>A front line that defended</h3>
+        <p>More surprising is how much of the attackers' column is about defending. Pressures, tackles, tackles won and ball recoveries in midfield by Barça's
+          forwards all go with winning. The counter-press, winning the ball back high and straight away, is usually talked about as a style. Here it's
+          measurably tied to results.</p>
+        <h3>Midfield: control, switches and a warning sign</h3>
+        <p>Midfielders' links are weaker, but a pattern emerges: accurate passing, switches of play and chance creation go with winning. The one
+          stat that clearly goes the other way is progressive carries. When midfielders had to dribble the ball forward themselves, it usually meant
+          opponents had shut the passing lanes, and those are the games Barça struggled in.</p>
+        <h3>Defenders: almost no signal</h3>
+        <p>Barça's defenders look the same in wins and defeats. Only switches of play show real evidence. This doesn't mean defenders didn't matter;
+          it means their individual numbers don't capture it. Their job was to recycle the ball and keep the shape, and they did that in good and bad games alike.</p>
+        <h3>Context matters: compare the World Cup</h3>
+        <p>In <a href="https://smyans.github.io/world-cup-2022-player-stats/">the same analysis of the 2022 World Cup</a>, pass completion was irrelevant and
+          having more of the ball went with losing. For Barça, a team built on keeping the ball, accurate midfield passing matters a little. What wins depends on
+          the team: there isn't one universal stat.</p>
+      </div>
+    </section>
+
+    <section id="shots">
+      <h2>Every shot, for and against</h2>
+      <p class="section-lede">Every shot in these 524 matches, with marker area proportional to expected goals (xG): the chance a shot from
+        that spot, in that situation, goes in. Switch between Barça's shots and the shots they conceded, pick a season or a player,
+        and hover for details.</p>
+      <div class="controls">
+        <div class="segmented" role="radiogroup" aria-label="Which shots" id="side-filter">
+          <button role="radio" aria-checked="true" data-value="for">Barça shots</button>
+          <button role="radio" aria-checked="false" data-value="against">Shots conceded</button>
+        </div>
+        <label>Season <select id="season-filter"></select></label>
+        <label id="player-label">Player <select id="player-filter"></select></label>
+        <div class="segmented" role="radiogroup" aria-label="Shot outcome" id="outcome-filter">
+          <button role="radio" aria-checked="true" data-value="all">All</button>
+          <button role="radio" aria-checked="false" data-value="target">On target</button>
+          <button role="radio" aria-checked="false" data-value="goal">Goals</button>
+        </div>
+      </div>
+      <div class="split shots-split">
+        <div class="card pitch-card">
+          <svg id="shot-map" role="img" aria-label="Shot map"></svg>
+          <div class="legend" id="shot-legend"></div>
+          <div class="insight" id="shot-insight"></div>
+        </div>
+        <div class="side">
+          <div class="tiles compact" id="shot-tiles"></div>
+          <div class="card">
+            <h3 id="leaderboard-title">Top scorers</h3>
+            <p class="meta">Goals vs expected goals. Click a name to filter.</p>
+            <table class="leaderboard" id="leaderboard"></table>
+          </div>
+        </div>
+      </div>
+      <div class="analysis">
+        <h3>Where Barça's goals came from</h3>
+        <p>63% of Barça's shots came from inside the box, but 86% of their goals did. A shot inside the area went in 22% of the time. From outside it was
+          6.4%, and that number is unusually high: opponents managed 2.6% from the same range. The difference is mostly one player. Messi scored 88 of Barça's
+          193 goals from outside the box, including 39 direct free kicks.</p>
+        <h3>Finishing that beat the model every year</h3>
+        <p>Barça scored more than their chances were worth in every one of the 17 seasons. The biggest gap was 2012/13 (+41 goals); the smallest were 2005/06
+          (+0.9) and 2020/21 (+4.0). Messi accounts for about half the total, but the rest of the squad beat their xG by a similar amount. That's partly
+          great finishers, and partly that xG models are built on average teams: Barça's chances often came after pulling a defence apart, which the model can't fully see.</p>
+        <h3>The defence was built on prevention</h3>
+        <p>Switch to <em>Shots conceded</em> and the picture changes. Opponents averaged under one xG a game and scored about what those chances were worth
+          (423 goals from 439 xG). Barça's defensive record didn't depend on goalkeeping miracles; it came from not letting teams shoot from good positions.</p>
+      </div>
+    </section>
+
+    <section id="territory">
+      <h2>Where Barça have the ball when they win</h2>
+      <p class="section-lede">Each zone shows the share of Barça's on-ball actions (passes, carries, dribbles, shots, receptions) that happen there.
+        Blue zones are where Barça have more of the ball in wins; red zones are where they have more of it when they drop points.
+        Barça always attack left to right. Hover a zone for the numbers.</p>
+      <div class="controls">
+        <div class="segmented" role="radiogroup" aria-label="Territory view" id="territory-view">
+          <button role="radio" aria-checked="true" data-value="diff">Wins vs dropped points</button>
+          <button role="radio" aria-checked="false" data-value="win">In wins</button>
+          <button role="radio" aria-checked="false" data-value="dropped">When dropping points</button>
+        </div>
+      </div>
+      <div class="card">
+        <svg id="territory-map" role="img" aria-label="Pitch zones showing where Barça have the ball in wins and in dropped points"></svg>
+        <div class="scale-legend" id="territory-legend"></div>
+      </div>
+      <div class="analysis">
+        <h3>The surprise: dropped points happen in the opponent's half</h3>
+        <p>You might expect Barça to drop points when they were pinned back. The opposite is true. When they drew or lost, Barça had <em>more</em> of their
+          on-ball actions in the opponent's half (59.1% vs 56.6% in wins). The deepest red zone sits just outside the opponent's penalty area, in the middle of the pitch.</p>
+        <p>That's the picture of a low block: ten defenders packed around their own box, and Barça passing around the edge of it without getting in.
+          In wins, Barça had slightly more of the ball <em>inside</em> the box and more in their own half, which means they were building patiently and then breaking through.</p>
+        <h3>Part cause, part effect</h3>
+        <p>Some of this is the score. Once Barça were 2–0 up, they could keep the ball in safe areas and let the clock run, so wins naturally include more
+          possession deep in their own half. But the edge-of-the-box pattern in dropped points matches the model's finding about forced forward passing:
+          against a deep, compact defence, more of the ball in the final third doesn't mean more danger.</p>
+      </div>
+    </section>
+
+    <section id="model">
+      <h2>Can the stats tell a win from dropped points?</h2>
+      <p class="section-lede">A logistic regression compares Barça with the opponent on eight in-game stats, plus home or away. It's tested one season
+        at a time: trained on the other 16 seasons, then asked to judge every match of the season it never saw.</p>
+      <div class="tiles" id="model-tiles"></div>
+      <div class="split">
+        <div class="card">
+          <h3>What the model leans on</h3>
+          <p class="meta">Effect on the odds of winning for one standard deviation more than the opponent (or for playing at home), with 95% bootstrap intervals.</p>
+          <svg id="coef-chart" role="img" aria-label="Model coefficients with confidence intervals"></svg>
+        </div>
+        <div class="card">
+          <h3>Does the model know when to be confident?</h3>
+          <p class="meta">Matches grouped by the model's predicted chance of a Barça win, showing what actually happened in each group.</p>
+          <div id="calibration"></div>
+          <div class="legend" id="calibration-legend"></div>
+        </div>
+      </div>
+      <div class="split">
+        <div class="card">
+          <h3>Dropped points the stats said were wins</h3>
+          <p class="meta">The model was most confident in a win in these games, and Barça didn't get one.</p>
+          <table class="leaderboard" id="surprise-dropped"></table>
+        </div>
+        <div class="card">
+          <h3>Wins the stats didn't see coming</h3>
+          <p class="meta">Barça won these despite the numbers.</p>
+          <table class="leaderboard" id="surprise-wins"></table>
+        </div>
+      </div>
+      <div class="analysis">
+        <h3>What it learned</h3>
+        <p>xG difference does most of the work. On its own it separates wins from dropped points well (AUC 0.81). Adding the other stats and venue
+          improves that to 0.84. Beyond chances, three things clearly matter. Out-defending the opponent (more tackles, interceptions and blocks) helps.
+          Playing at home helps: Barça won 83% of these home games and 64% away. And making many more progressive passes than the opponent <em>hurts</em>,
+          once chances are accounted for. That's the low-block story again: when Barça had to keep forcing the ball forward without creating more, the game was getting away from them.</p>
+        <p>Possession and pass completion pull in opposite directions, and neither is clearly different from zero. At this level of dominance, how much
+          of the ball Barça had tells you little about the result.</p>
+        <h3>It knows when to be confident</h3>
+        <p>When the model gave Barça a 95%+ chance of winning, they won 97% of those games. Below 30%, they won 18%. Its probabilities mean what they say,
+          which is the main thing you want from a model like this.</p>
+        <h3>What it can't see</h3>
+        <p>In 77 of the 138 games where Barça dropped points, they still created more xG than the opponent. Football is low-scoring, and a 4.17-xG
+          home defeat to Real Betis (3–4 in 2018/19) is the reminder. This model also uses stats from the match itself, so it explains results rather than
+          predicting them before kick-off.</p>
+      </div>
+    </section>
+
+    <section id="method">
+      <h2>Method &amp; caveats</h2>
+      <div class="method-grid">
+        <div>
+          <h3>Data</h3>
+          <p>StatsBomb Open Data for La Liga, 2004/05 to 2020/21: every event and full lineups for 524 Barcelona matches.
+            StatsBomb's free release covers the league games Lionel Messi played for Barça, so this is the Messi era, not every Barça match.
+            Games he missed (injuries, rotation) aren't here.</p>
+          <h3>Player stats</h3>
+          <p>26 metrics per Barça player per match, converted to per-90 rates using minutes reconstructed from lineups (stoppage time included).
+            Players under 30 minutes are dropped. Position is the one a player played longest that match. Goalkeepers are excluded.</p>
+        </div>
+        <div>
+          <h3>Statistics</h3>
+          <p>Spearman correlation between each stat and the result (loss 0, draw 0.5, win 1), with Benjamini–Hochberg correction across 26 tests
+            per position group. The heatmap's shade is −log₁₀ of the adjusted p-value, so darker means stronger evidence.</p>
+          <p>The win model is a logistic regression on standardised Barça-minus-opponent stat differences plus a home/away flag.
+            It's scored with leave-one-season-out cross-validation and compared with always predicting the win rate of the other seasons.</p>
+          <h3>Caveats</h3>
+          <p>Correlation isn't causation, and in-game stats are partly <em>caused</em> by the score: a team that's 2–0 up plays differently.
+            Barça won most of these games, so "dropped points" is a small group (about one game in four).</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>Code &amp; data: <a href="https://github.com/smyans/fc-barcelona-stats">github.com/smyans/fc-barcelona-stats</a> ·
+      Data: <a href="https://github.com/statsbomb/open-data">StatsBomb Open Data</a> ·
+      Also by me: <a href="https://smyans.github.io/world-cup-2022-player-stats/">What wins World Cup matches?</a></p>
+  </footer>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script src="glossary.js?v=3"></script>
+  <script src="insights.js?v=3"></script>
+  <script src="app.js?v=3"></script>
+</body>
+</html>

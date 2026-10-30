@@ -1,0 +1,10 @@
+feature,label,coefficient,ci_low,ci_high
+xg_diff,xG,1.785,1.41,2.298
+shots_diff,Shots,-0.161,-0.588,0.276
+touches_in_box_diff,Touches in box,-0.094,-0.527,0.392
+pass_share_diff,Possession (share of passes),0.436,-0.052,0.942
+pass_completion_pct_diff,Pass completion %,-0.396,-0.839,0.073
+progressive_passes_diff,Progressive passes,-0.447,-0.849,-0.029
+pressures_diff,Pressures,-0.167,-0.436,0.086
+defensive_actions_diff,Tackles + interceptions + blocks,0.424,0.171,0.703
+home,Playing at home,0.323,0.083,0.604

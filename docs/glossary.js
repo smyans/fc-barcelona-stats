@@ -1,0 +1,31 @@
+"use strict";
+
+// One-line definitions shown under the selected stat.
+const GLOSSARY = {
+  xg: "Expected goals: how many goals a player's shots were worth, based on where and how each was taken.",
+  shots: "Shot attempts, including blocked and off-target ones.",
+  touches_in_box: "On-ball actions (receiving, passing, carrying, shooting) inside the opponent's penalty area.",
+  xa: "Expected assists: the xG of the shots a player's passes set up.",
+  chances_created: "Passes that lead directly to a shot.",
+  passes_into_box: "Completed passes that end inside the opponent's penalty area.",
+  crosses: "Crosses attempted from wide areas.",
+  passes: "Pass attempts.",
+  pass_completion_pct: "Share of attempted passes that reach a teammate.",
+  ground_pass_pct: "Share of passes played along the ground rather than in the air.",
+  long_balls: "Passes of 35+ yards.",
+  switches: "Passes that move the ball 40+ yards across the width of the pitch.",
+  passes_into_final_third: "Completed passes from deeper areas into the final third.",
+  progressive_passes: "Completed passes that move the ball sharply toward goal.",
+  progressive_carries: "Runs with the ball that gain 10+ yards toward goal.",
+  actions_under_pressure: "Actions taken while an opponent is closing the player down.",
+  successful_dribbles: "Take-ons that beat an opponent.",
+  turnovers: "Times the player lost the ball through a miscontrol or being tackled.",
+  tackles: "Tackles attempted.",
+  tackles_won: "Tackles that won the ball or knocked it clear.",
+  interceptions: "Opponent passes cut out.",
+  pressures: "Times the player closed down an opponent who had the ball.",
+  blocks: "Shots, passes or crosses blocked.",
+  clearances: "Defensive clearances.",
+  middle_third_recoveries: "Loose balls won back in the middle third of the pitch.",
+  fouls_committed: "Fouls committed.",
+};
