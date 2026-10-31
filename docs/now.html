@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barça Now: Forecasts</title>
+  <meta name="description" content="FC Barcelona from 2023/24 to today: the unexpected stats behind results, a forecast for the next match, and a live win-probability calculator to use during the game.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='20' fill='%232a78d6'/><rect x='50' y='10' width='40' height='80' fill='%23e34948'/></svg>">
+  <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">FC Barcelona · 2023/24 to today · <span id="data-through"></span></p>
+      <h1>Barça now: who wins next?</h1>
+      <p class="lede">What's really been behind Barça's results since 2023/24, a forecast for the next match, and a live calculator
+        that updates the odds as the game unfolds.</p>
+      <div class="tiles" id="hero-tiles"></div>
+      <nav class="toc" aria-label="Sections">
+        <a href="#next">Next match</a>
+        <a href="#live">Live predictor</a>
+        <a href="#drivers">What's driving results</a>
+        <a href="#recent">Recent games</a>
+        <a href="#trust">How good are the models?</a>
+        <a href="index.html">← The Messi era (2004–2021)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="next">
+      <h2 id="next-title">Next match</h2>
+      <p class="section-lede" id="next-sub"></p>
+      <div class="split">
+        <div class="card">
+          <h3>Our model</h3>
+          <div class="outcome-tiles" id="next-model"></div>
+          <div class="compare" id="next-compare"></div>
+        </div>
+        <div class="card">
+          <h3>Most likely scores</h3>
+          <p class="meta" id="next-xg"></p>
+          <table class="leaderboard" id="next-scores"></table>
+        </div>
+      </div>
+      <div class="analysis" id="next-analysis"></div>
+    </section>
+
+    <section id="live">
+      <h2>Live predictor</h2>
+      <p class="section-lede">Use this during the match. Set the minute, the score and any red cards, and the win, draw and loss chances update.
+        It starts from the pre-match forecast and accounts for how much time is left, when goals tend to come, red cards,
+        and teams chasing a game.</p>
+      <div class="split live-split">
+        <div class="card">
+          <div class="controls live-controls">
+            <label>Match <select id="live-fixture"></select></label>
+          </div>
+          <div class="live-grid">
+            <div class="live-field">
+              <span class="live-label">Minute <b id="minute-value">0'</b></span>
+              <input type="range" id="minute" min="0" max="95" value="0" aria-label="Minutes played">
+              <span class="hint">45 = half-time · 90+3 = 93</span>
+            </div>
+            <div class="live-field">
+              <span class="live-label">Score</span>
+              <div class="score-row">
+                <div class="stepper" data-key="goalsB"><span class="who">Barça</span><button data-step="-1" aria-label="Barça goal minus">−</button><b>0</b><button data-step="1" aria-label="Barça goal plus">+</button></div>
+                <div class="stepper" data-key="goalsO"><span class="who" id="opp-name-goals">Opponent</span><button data-step="-1" aria-label="Opponent goal minus">−</button><b>0</b><button data-step="1" aria-label="Opponent goal plus">+</button></div>
+              </div>
+            </div>
+            <div class="live-field">
+              <span class="live-label">Red cards</span>
+              <div class="score-row">
+                <div class="stepper" data-key="redsB"><span class="who">Barça</span><button data-step="-1" aria-label="Barça red card minus">−</button><b>0</b><button data-step="1" aria-label="Barça red card plus">+</button></div>
+                <div class="stepper" data-key="redsO"><span class="who" id="opp-name-reds">Opponent</span><button data-step="-1" aria-label="Opponent red card minus">−</button><b>0</b><button data-step="1" aria-label="Opponent red card plus">+</button></div>
+              </div>
+            </div>
+            <button class="reset" id="live-reset">Reset to kick-off</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="outcome-tiles big" id="live-probs" aria-live="polite"></div>
+          <p class="meta" id="live-caption"></p>
+          <h3>If the score stays like this…</h3>
+          <svg id="live-chart" role="img" aria-label="Win, draw and loss chances for the rest of the match if the score doesn't change"></svg>
+          <div class="legend" id="live-legend"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="drivers">
+      <h2>What's been driving results since 2023/24?</h2>
+      <p class="section-lede">Bookmakers' odds already account for how good each opponent is. So the question here is narrower and more interesting:
+        when Barça got <em>more</em> points than the odds expected, or fewer, which stats went with it?</p>
+      <div class="split">
+        <div class="card">
+          <h3>Points vs expectations, by season</h3>
+          <p class="meta">Expected points come from the pre-match odds (3 × chance of a win + chance of a draw).</p>
+          <div id="season-bars"></div>
+        </div>
+        <div class="card">
+          <h3>Which stats went with beating the odds?</h3>
+          <p class="meta">Correlation with points above expectation, Barça games 2023/24 to now. Deeper colour = stronger evidence.
+            The black tick shows the same stat across every La Liga team.</p>
+          <div id="surprise-bars"></div>
+        </div>
+      </div>
+      <div class="split-cards" id="split-cards"></div>
+      <div class="analysis" id="drivers-analysis"></div>
+    </section>
+
+    <section id="recent">
+      <h2>The last 12 games, and what stood out</h2>
+      <p class="section-lede">Each game with the pre-match odds, the result, and the stats furthest from Barça's normal for that match.</p>
+      <div class="recent-list" id="recent-list"></div>
+    </section>
+
+    <section id="trust">
+      <h2>How good are the models?</h2>
+      <p class="section-lede">Every number here comes from predicting matches the model hadn't seen: each season is predicted by a model trained only on earlier seasons.</p>
+      <div class="tiles" id="trust-tiles"></div>
+      <div class="split">
+        <div class="card">
+          <h3>When it says 70%, does it happen 70% of the time?</h3>
+          <p class="meta">Every win, draw and loss forecast from 2023/24 on, grouped by predicted chance. Dots on the line = honest probabilities.</p>
+          <svg id="calibration-chart" role="img" aria-label="Calibration of the pre-match model"></svg>
+        </div>
+        <div class="card">
+          <h3>The live model gets sharper as the game goes on</h3>
+          <p class="meta">Prediction error (log loss) at each minute across Barça matches with minute-by-minute data. Lower is better.</p>
+          <svg id="minute-chart" role="img" aria-label="Live model error by minute"></svg>
+        </div>
+      </div>
+      <div class="analysis" id="trust-analysis"></div>
+    </section>
+
+    <section id="method">
+      <h2>Method &amp; caveats</h2>
+      <div class="method-grid">
+        <div>
+          <h3>Data</h3>
+          <p>Results, match stats (shots, corners, fouls, cards) and closing bookmaker odds for every La Liga match since 2005/06 from
+            <a href="https://www.football-data.co.uk/">football-data.co.uk</a>, refreshed after each matchday. Goal and red-card timings come from
+            the StatsBomb minute-by-minute data used on the <a href="index.html">Messi-era page</a>.</p>
+          <h3>Pre-match model</h3>
+          <p>Two Poisson regressions predict each side's goals from an Elo rating (built from every result since 2005), recent form
+            (goals and shots on target over the last six games), scoring habits (goals for and against over the last 20) and rest.
+            A Dixon–Coles correction fixes low scores. Barça games have had about 20% more goals than any rating predicts, so their expected
+            goals are scaled up. That factor is fitted on 2006–2021 minute-by-minute data and it improves predictions for 2023/24 onwards too.</p>
+        </div>
+        <div>
+          <h3>Live model</h3>
+          <p>A minute-by-minute simulation of the goal difference. Each side's scoring rate is its pre-match expected goals × the share of goals
+            typically scored in that minute × a red-card factor (a side down to ten scores about 0.4× as often and its opponent about 2×,
+            estimated from 1,650 La Liga matches with a red card) × a small boost for the side that's behind.</p>
+          <h3>Caveats</h3>
+          <p>The models only know what's in the data: no injuries, line-ups or weather. Bookmakers know all of that, which is why their odds are
+            still slightly better. The stats-behind-results analysis covers 124 Barça games, so treat single-team patterns as leads, not proof.
+            This is a data project, not betting advice.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>Code: <a href="https://github.com/smyans/fc-barcelona-stats">github.com/smyans/fc-barcelona-stats</a> ·
+      Data: <a href="https://www.football-data.co.uk/">football-data.co.uk</a>, <a href="https://github.com/statsbomb/open-data">StatsBomb Open Data</a> ·
+      <span id="generated"></span></p>
+  </footer>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script src="common.js?v=5"></script>
+  <script src="now.js?v=5"></script>
+</body>
+</html>

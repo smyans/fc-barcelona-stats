@@ -6,7 +6,7 @@
   <title>What Wins Barça Games?</title>
   <meta name="description" content="An interactive analysis of 524 FC Barcelona La Liga matches (2004/05 to 2020/21) using StatsBomb event data: which player stats go with winning, every shot, where Barça have the ball, and a win model.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='10' y='10' width='80' height='80' rx='20' fill='%232a78d6'/><rect x='50' y='10' width='40' height='80' rx='0' fill='%23e34948'/></svg>">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <header class="hero">
@@ -17,6 +17,7 @@
         when Barcelona win, and when they drop points, what's actually different?</p>
       <div class="tiles" id="summary-tiles"></div>
       <nav class="toc" aria-label="Sections">
+        <a class="now-link" href="now.html">Barça now: next-match forecast &amp; live predictor →</a>
         <a href="#short">The short version</a>
         <a href="#players">Player stats</a>
         <a href="#shots">Shot map</a>
@@ -247,8 +248,9 @@
   </footer>
 
   <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
-  <script src="glossary.js?v=3"></script>
-  <script src="insights.js?v=3"></script>
-  <script src="app.js?v=3"></script>
+  <script src="common.js?v=5"></script>
+  <script src="glossary.js?v=5"></script>
+  <script src="insights.js?v=5"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

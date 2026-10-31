@@ -1,6 +1,7 @@
 # What Wins Barça Games? FC Barcelona Match Analysis, 2004/05–2020/21
 
 **▶ [Explore the interactive site](https://smyans.github.io/fc-barcelona-stats/)**
+**▶ [Barça now: next-match forecast & live win predictor](https://smyans.github.io/fc-barcelona-stats/now.html)**
 
 An event-data analysis of 524 FC Barcelona La Liga matches across the Messi era. It asks one question:
 **when Barça win, and when they drop points, what's actually different?** It has three parts:
@@ -31,6 +32,27 @@ An event-data analysis of 524 FC Barcelona La Liga matches across the Messi era.
 | ![Shot map](figures/shot_map.png) | ![Touch difference](figures/touch_difference.png) |
 
 ![Model coefficients](figures/model_coefficients.png)
+
+## Barça now (2023/24 to today)
+
+A second page brings the project up to date with every La Liga match since 2005/06 from
+[football-data.co.uk](https://www.football-data.co.uk/): results, shots, corners, fouls, cards and closing bookmaker odds.
+
+- **What's been driving results:** the target is points *above what the odds expected*, so opponent strength is already accounted for.
+  Barça have beaten expectations in every season since 2023/24 (+29 points over 124 games). The unlikely link: with 12+ fouls committed,
+  Barça beat the odds by +0.38 points a game; with 7 or fewer, they fell 0.19 short. Across La Liga, teams that win 9+ corners fall 0.37 points
+  short of expectations, a sign of a team stuck against a deep defence.
+- **Pre-match model:** Poisson regressions on Elo, recent form, scoring habits and rest, with a Dixon–Coles low-score correction.
+  Tested season by season on 2023/24 onwards, it captures 86% of the bookmakers' edge over guessing (log loss 0.969 vs 0.954 for the market).
+- **Live model:** a minute-by-minute simulation of the goal difference that starts from the pre-match expected goals and accounts for when goals
+  tend to come, red cards (estimated from 1,650 matches) and teams chasing a game. Knowing the half-time score cuts prediction error in Barça games
+  from 0.72 to 0.64. Barça games average about 20% more goals than ratings predict, so that's fitted on 2006–2021 minute-by-minute data and confirmed on 2023/24 onwards.
+
+Refresh after each matchday:
+
+```bash
+python run_now.py
+```
 
 ## Data
 
@@ -86,7 +108,14 @@ barca_stats/
   model.py      # team-match table, logistic regression, season-held-out CV, bootstrap
   plots.py      # static charts (matplotlib + mplsoccer)
   export.py     # JSON for the interactive site
-run.py          # end-to-end pipeline
+  fd.py         # football-data.co.uk results, stats and odds (2005/06 to now)
+  ratings.py    # Elo, recent form, scoring habits, rest
+  prematch.py   # Poisson pre-match model, Dixon-Coles, walk-forward backtest
+  inplay.py     # live win-probability model and its validation
+  recent.py     # stats behind beating or missing expectations (2023/24 on)
+  export_now.py # JSON for the Barça now page
+run.py          # Messi-era pipeline
+run_now.py      # Barça now pipeline (re-run after each matchday)
 docs/           # the interactive site (plain HTML/CSS/JS + SVG, served by GitHub Pages)
 ```
 

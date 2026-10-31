@@ -233,3 +233,71 @@ footer { padding: 40px 16px 56px; color: var(--ink-3); font-size: 0.88rem; borde
 .calibration-row .stack { display: flex; height: 18px; border-radius: 4px; overflow: hidden; gap: 2px; background: var(--surface); }
 .calibration-row .stack span { display: block; height: 100%; }
 .calibration-row .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-3); }
+
+/* ---------- Barça now page ---------- */
+.outcome-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 10px 0 14px; }
+.outcome { border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: 10px; padding: 10px 12px; background: var(--surface); }
+.outcome .value { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.outcome .label { color: var(--ink-2); font-size: 0.84rem; }
+.outcome .sub { color: var(--ink-3); font-size: 0.76rem; margin-top: 2px; }
+.outcome-tiles.big .value { font-size: 2.2rem; }
+.prob-row, .season-row, .rho-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; align-items: center; margin-bottom: 8px; font-size: 0.84rem; }
+.prob-label { color: var(--ink-2); }
+.prob-bar { display: flex; gap: 2px; height: 16px; border-radius: 4px; overflow: hidden; }
+.prob-bar span { display: block; height: 100%; }
+
+.live-grid { display: grid; gap: 18px; }
+.live-field { display: grid; gap: 8px; }
+.live-label { font-size: 0.86rem; color: var(--ink-2); }
+.live-label b { color: var(--ink); font-size: 1.1rem; margin-left: 6px; }
+.hint { font-size: 0.76rem; color: var(--ink-3); }
+input[type="range"] { width: 100%; accent-color: var(--pos); }
+.score-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.stepper { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--rule); border-radius: 10px; padding: 6px 8px; background: var(--surface-2); }
+.stepper .who { font-size: 0.84rem; color: var(--ink-2); min-width: 64px; }
+.stepper b { font-size: 1.3rem; min-width: 1.4em; text-align: center; font-variant-numeric: tabular-nums; }
+.stepper button, .reset { font: inherit; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 8px; cursor: pointer; }
+.stepper button { width: 34px; height: 34px; font-size: 1.15rem; line-height: 1; }
+.stepper button:hover, .reset:hover { border-color: var(--ink-3); }
+.reset { justify-self: start; padding: 6px 14px; font-size: 0.86rem; color: var(--ink-2); }
+
+.season-row { grid-template-columns: 120px minmax(0, 1fr) auto; cursor: default; }
+.season-bars { position: relative; height: 18px; }
+.season-bars .bar { position: absolute; left: 0; border-radius: 4px; }
+.season-bars .actual { top: 0; height: 10px; background: var(--pos); }
+.season-bars .expected { top: 12px; height: 6px; background: var(--neutral); }
+.season-row .n { color: var(--ink-2); font-variant-numeric: tabular-nums; font-size: 0.8rem; }
+
+.rho-row { grid-template-columns: 150px minmax(0, 1fr); margin-bottom: 5px; }
+.rho-track { position: relative; height: 14px; background: linear-gradient(var(--rule), var(--rule)) center / 1px 100% no-repeat; }
+.rho-bar { position: absolute; top: 2px; height: 10px; border-radius: 3px; }
+.rho-tick { position: absolute; top: -1px; width: 2px; height: 16px; background: var(--ink); border-radius: 1px; transform: translateX(-1px); }
+.rho-axis { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--ink-3); margin: 6px 0 0 160px; }
+
+.split-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.split-row { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; padding: 6px 0; border-top: 1px solid var(--rule); font-size: 0.88rem; color: var(--ink-2); }
+.split-row b { font-variant-numeric: tabular-nums; }
+.split-row .sub { grid-column: 1 / -1; color: var(--ink-3); font-size: 0.76rem; }
+
+.recent-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.recent-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; font-size: 0.88rem; }
+.recent-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.recent-head .sub { color: var(--ink-3); margin-left: auto; font-size: 0.8rem; }
+.result-pill { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; color: #fff; font-weight: 700; font-size: 0.8rem; }
+.result-pill.r3 { background: var(--pos); }
+.result-pill.r1 { background: var(--neutral); color: var(--ink); }
+.result-pill.r0 { background: var(--neg); }
+.recent-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--ink-2); font-size: 0.8rem; margin: 8px 0; font-variant-numeric: tabular-nums; }
+.standouts { margin: 0; padding-left: 18px; color: var(--ink-2); }
+.standouts li { margin: 2px 0; }
+.toc a.now-link { color: var(--pos); border-color: var(--pos); font-weight: 600; }
+
+@media (max-width: 480px) {
+  .outcome .value { font-size: 1.3rem; }
+  .outcome-tiles.big .value { font-size: 1.7rem; }
+  .prob-row, .rho-row { grid-template-columns: 96px minmax(0, 1fr); }
+  .season-row { grid-template-columns: 70px minmax(0, 1fr); }
+  .season-row .n { grid-column: 2; }
+  .rho-axis { margin-left: 0; }
+}
+.live-controls select { max-width: 100%; }
